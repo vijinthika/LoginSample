@@ -40,9 +40,14 @@ public class ValidationResponseCode {
 
     @Value("${message.validation.user.notExists}")
     private String userNotExistsMessage;
-
+    @Value("${message.validation.user.notVerified}")
+    private String userNotVerifiedMessage;
     @Value("${message.validation.user.verified}")
     private String userVerifiedMessage;
+    @Value("${message.validation.user.loginFailed}")
+    private String userLoginFailedMessage;
+    @Value("${message.success.user.loginSuccess}")
+    private String userLoginSuccessMessage;
     @Value("${message.success.getById.user}")
     private String getUserByIdSuccessMessage;
 
