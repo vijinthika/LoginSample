@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 public class UsersController {
     @Autowired
     private UsersService usersService;
@@ -21,36 +22,41 @@ public class UsersController {
 
     @PostMapping(value = EndpointURI.USERREGISTER)
     public ResponseEntity<Object> saveUser(@RequestBody RegisterDto registerDto) {
-        if (usersService.existsByName(registerDto.getName())) {
-            return ResponseEntity.ok(new BaseResponse(RequestStatus.FAILURE.getStatus(),
-                    validationResponseCode.getUserAlreadyExists(),
-                    validationResponseCode.getValidationUserAlreadyExists()));
-        }
-        if (usersService.existsByEmail(registerDto.getEmail())) {
-            return ResponseEntity.ok(new BaseResponse(RequestStatus.FAILURE.getStatus(),
-                    validationResponseCode.getUserAlreadyExists(),
-                    validationResponseCode.getValidationUserAlreadyExists()));
-        }
+//        if (usersService.existsByName(registerDto.getName())) {
+//            return ResponseEntity.ok(new BaseResponse(RequestStatus.FAILURE.getStatus(),
+//                    validationResponseCode.getUserAlreadyExists(),
+//                    validationResponseCode.getValidationUserAlreadyExists()));
+//        }
+//        if (usersService.existsByEmail(registerDto.getEmail())) {
+//            return ResponseEntity.ok(new BaseResponse(RequestStatus.FAILURE.getStatus(),
+//                    validationResponseCode.getUserAlreadyExists(),
+//                    validationResponseCode.getValidationUserAlreadyExists()));
+//        }
 
         usersService.saveUser(registerDto);
         return ResponseEntity.ok(new BaseResponse(RequestStatus.SUCCESS.getStatus(),
                 validationResponseCode.getCommonSuccessCode(),
                 validationResponseCode.getSaveUserSuccessMessage()));
     }
+    @PostMapping(EndpointURI.USERLOGIN)
+    public void loginUser(LoginDto loginDto) {
 
-
-    @PutMapping(value = EndpointURI.USERVERIFICATION)
-    public ResponseEntity<Object> verifyAccount(@PathVariable String email, @PathVariable String otp) {
-        if (!usersService.existsByEmail(email)) {
-            return ResponseEntity.ok(new BaseResponse(RequestStatus.WARNING.getStatus(),
-                    validationResponseCode.getUserNotExistsCode(),
-                    validationResponseCode.getUserNotExistsMessage()));
-        }
-       usersService.verifyAccount(email,otp);
-            return ResponseEntity.ok(new BaseResponse(RequestStatus.SUCCESS.getStatus(),
-                    validationResponseCode.getCommonSuccessCode(),
-                    validationResponseCode.getUserVerifiedMessage()));
+        usersService.loadUserByUsername(loginDto.getUsername());
     }
+
+
+//    @PutMapping(value = EndpointURI.USERVERIFICATION)
+//    public ResponseEntity<Object> verifyAccount(@PathVariable String email, @PathVariable String otp) {
+//        if (!usersService.existsByEmail(email)) {
+//            return ResponseEntity.ok(new BaseResponse(RequestStatus.WARNING.getStatus(),
+//                    validationResponseCode.getUserNotExistsCode(),
+//                    validationResponseCode.getUserNotExistsMessage()));
+//        }
+//       usersService.verifyAccount(email,otp);
+//            return ResponseEntity.ok(new BaseResponse(RequestStatus.SUCCESS.getStatus(),
+//                    validationResponseCode.getCommonSuccessCode(),
+//                    validationResponseCode.getUserVerifiedMessage()));
+//    }
 //    @GetMapping(value = EndpointURI.USERLOGIN)
 //    public ResponseEntity<Object> login(@RequestBody LoginDto loginDto)
 //    {

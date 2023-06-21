@@ -28,4 +28,5 @@ public class EmailUtil {
             throw new RuntimeException("Failed to send OTP. Please try again.", e);
         }
     }
+
 }

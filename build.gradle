@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
 	id 'org.springframework.boot' version '2.7.12'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
 }
 
 group = 'com.login'
@@ -27,15 +27,13 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//	testImplementation 'org.springframework.security:spring-security-test'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-oauth2-jose:5.5.2'
+	implementation 'org.springframework.security:spring-security-oauth2-client:5.5.2'
 
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'com.sun.mail:jakarta.mail:1.6.7'
 	implementation 'com.sun.mail:javax.mail:1.6.2'
-
-
-
 }
 
 tasks.named('test') {
