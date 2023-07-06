@@ -23,8 +23,8 @@ public class Users {
     private String active;
     private String otp;
     private LocalDateTime otpGeneratedTime;
-    @ManyToMany
-    @JoinColumn(name = "role_id",nullable = false)
-    private Set<Roles> roles=new HashSet<>();
+//    @ManyToMany
+//    @JoinColumn(name = "role_id",nullable = false)
+//    private Set<Roles> roles=new HashSet<>();
 
 }

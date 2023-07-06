@@ -1,24 +1,32 @@
 package com.login.Login.service;
 
-import com.login.Login.entities.Users;
 import com.login.Login.request.dto.LoginDto;
 import com.login.Login.request.dto.RegisterDto;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UsersService extends UserDetailsService {
+public interface UsersService  {
 
     void saveUser(RegisterDto registerDto);
 
-//    public boolean existsByName(String name);
+    public boolean existsByNameIgnoreCase(String name);
+    public boolean existsByEmailIgnoreCase(String email);
+    public void verifyAccount(String email);
+    public boolean login(LoginDto loginDto);
+    public boolean isActive(String name);
+    public String getActiveStatus(String username);
+
+    public void generateOtp(String username);
+    public boolean checkTimeLimit(String otp, String username);
+    public void recreatePassword(String username,String password,String otp);
+    public void deActivateAccount(String username);
 //    public String regenerateOtp(String email);
 
-//   public void verifyAccount(String email,String otp);
+
 
 
 //    public boolean findByEmail(String email);
-//    public boolean existsByEmail(String email);
-//
-//   public boolean login(LoginDto loginDto);
+
+
+
 
 //   public boolean isActive(String email);
 

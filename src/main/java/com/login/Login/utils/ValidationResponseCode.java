@@ -28,7 +28,8 @@ public class ValidationResponseCode {
     // Messages for User
     @Value("${message.success.save.user}")
     private String saveUserSuccessMessage;
-
+    @Value("${message.success.user.verified}")
+    private String verifiedAccountMessage;
     @Value("${message.validation.verify.user}")
     private String userVerificationFailedMessage;
 
@@ -50,7 +51,16 @@ public class ValidationResponseCode {
     private String userLoginSuccessMessage;
     @Value("${message.success.getById.user}")
     private String getUserByIdSuccessMessage;
-
+    @Value("${message.success.user.regenerate.otp.send}")
+    private String userRegenerateOtpSuccessMessage;
+    @Value("${message.success.user.change.password}")
+    private String userPasswordChangeSuccessMessage;
+    @Value("${message.success.user.not.change.password}")
+    private String userPasswordNotChangeSuccessMessage;
+    @Value("${message.validation.time.limit.exceed}")
+    private String timeLimitExceedMessage;
+    @Value("${message.success.user.deactivate}")
+    private String userAccountDeactivateSuccessMessage;
     @Value("${message.success.update.user}")
     private String updateUserSuccessMessage;
 
