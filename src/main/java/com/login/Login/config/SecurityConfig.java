@@ -6,7 +6,12 @@
 //import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 //import org.springframework.security.web.SecurityFilterChain;
 //
 //
@@ -15,10 +20,11 @@
 //@EnableAutoConfiguration
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 //public class SecurityConfig {
-////    @Autowired
-////    private UsersService usersService;
-////    @Autowired
-////    private AuthenticationSuccessHandler authenticationSuccessHandler;
+//
+//    @Autowired
+//    private UsersService usersService;
+//    @Autowired
+//    private AuthenticationSuccessHandler authenticationSuccessHandler;
 //
 //    @Bean
 //    public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -39,31 +45,46 @@
 //        ;
 //        return http.build();
 //    }
-////    @Bean
-////    public DaoAuthenticationProvider authenticationProvider() {
-////        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-////        auth.setUserDetailsService(usersService);
-////        auth.setPasswordEncoder(bCryptPasswordEncoder());
-////        return auth;
-////    }
+//    @Bean
+//    public UserDetailsService userDetailsService()
+//    {
+//        UserDetails userChandricca= User.builder()
+//                .username("chandricca")
+//                .password(bCryptPasswordEncoder().encode("chandricca"))
+//                .roles("User")
+//                .build();
+//        UserDetails adminVijinthika= User.builder()
+//                .username("vijinthika")
+//                .password(bCryptPasswordEncoder().encode("vijinthika"))
+//                .roles("Admin")
+//                .build();
+//        return new InMemoryUserDetailsManager(userChandricca,adminVijinthika);
+//    }
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+//        auth.setUserDetailsService(usersService);
+//        auth.setPasswordEncoder(bCryptPasswordEncoder());
+//        return auth;
+//    }
 //
-////    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-////        return authenticationConfiguration.getAuthenticationManager();
-////    }
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
 //
-//    //    @Bean
-////    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-////        http.csrf().disable()
-////                .authorizeRequests()
-////                .antMatchers("/registration/**", "/login/**").permitAll()
-////                .anyRequest().authenticated()
-////                .and()
-////                .formLogin().loginPage("/login").successHandler(authenticationSuccessHandler)
-////                .and().csrf().disable()
-////                .logout().logoutUrl("/logout").logoutSuccessUrl("/login")
-////                .and().oauth2Login().loginPage("/login").successHandler(authenticationSuccessHandler);
-////        return http.build();
-////
-////    }
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/registration/**", "/login/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin().loginPage("/login").successHandler(authenticationSuccessHandler)
+//                .and().csrf().disable()
+//                .logout().logoutUrl("/logout").logoutSuccessUrl("/login")
+//                .and().oauth2Login().loginPage("/login").successHandler(authenticationSuccessHandler);
+//        return http.build();
+//
+//    }
 //
 //}

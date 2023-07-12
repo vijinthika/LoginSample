@@ -1,17 +1,15 @@
 package com.login.Login.controller;
 
 import com.login.Login.common.response.BaseResponse;
+import com.login.Login.request.dto.EmailDto;
 import com.login.Login.request.dto.LoginDto;
 import com.login.Login.request.dto.RegisterDto;
-import com.login.Login.rest.enums.ActiveStatus;
 import com.login.Login.rest.enums.RequestStatus;
 import com.login.Login.service.UsersService;
 import com.login.Login.utils.EndpointURI;
 import com.login.Login.utils.ValidationResponseCode;
-import net.bytebuddy.dynamic.TypeResolutionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,13 +20,18 @@ public class UsersController {
 
     @Autowired
     private ValidationResponseCode validationResponseCode;
-
+//    @PreAuthorize(value = Constants.ADMINN)
     @GetMapping("/hello")
     public String a()
     {
         return "hi";
     }
-
+//    @PreAuthorize(value = Constants.ADMINN)
+    @GetMapping("/helloo")
+    public String ab()
+    {
+        return "hii";
+    }
     @PostMapping(value = EndpointURI.USER_REGISTER)
     public ResponseEntity<Object> saveUser(@RequestBody RegisterDto registerDto) {
         if (usersService.existsByNameIgnoreCase(registerDto.getName()) ) {
@@ -160,6 +163,13 @@ public class UsersController {
                 validationResponseCode.getCommonSuccessCode(),
                 validationResponseCode.getUserAccountDeactivateSuccessMessage()));
     }
+    @PostMapping("/sendEmailWithAttachment")
+    public ResponseEntity<Object> senDEmailWithAttachment(@RequestBody EmailDto emailDto) {
+        usersService.sendEmailWithAttachment(emailDto);
+        return ResponseEntity.ok(new BaseResponse(RequestStatus.SUCCESS.getStatus(), validationResponseCode.getCommonSuccessCode(), "successfullysend"));
+    }
+
+
 }
 
 

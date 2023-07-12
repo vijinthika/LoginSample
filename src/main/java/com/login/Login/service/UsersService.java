@@ -1,5 +1,6 @@
 package com.login.Login.service;
 
+import com.login.Login.request.dto.EmailDto;
 import com.login.Login.request.dto.LoginDto;
 import com.login.Login.request.dto.RegisterDto;
 
@@ -18,6 +19,8 @@ public interface UsersService  {
     public boolean checkTimeLimit(String otp, String username);
     public void recreatePassword(String username,String password,String otp);
     public void deActivateAccount(String username);
+    public void sendEmailWithAttachment(EmailDto emailDto);
+    public void sendEmailWithAttachmentFile(EmailDto emailDto);
 //    public String regenerateOtp(String email);
 
 

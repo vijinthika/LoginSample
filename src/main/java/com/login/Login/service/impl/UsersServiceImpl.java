@@ -1,7 +1,10 @@
 package com.login.Login.service.impl;
 
+import com.login.Login.Repository.EmailRepository;
 import com.login.Login.Repository.UsersRepository;
+import com.login.Login.entities.Email;
 import com.login.Login.entities.Users;
+import com.login.Login.request.dto.EmailDto;
 import com.login.Login.request.dto.LoginDto;
 import com.login.Login.request.dto.RegisterDto;
 import com.login.Login.rest.enums.ActiveStatus;
@@ -12,6 +15,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -20,11 +27,12 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
+    private EmailRepository emailRepository;
+    @Autowired
     private OtpUtil otpUtil;
-
     @Autowired
     private EmailUtil emailUtil;
-//@Autowired
+//    @Autowired
 //    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 //
 //    @Override
@@ -39,21 +47,18 @@ public class UsersServiceImpl implements UsersService {
 //    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Roles> roles){
 //        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
 //    }
-
 //    @Override
 //    public String regenerateOtp(String email) {
 //        //Users users = usersRepository.getByEmail(email);
 //        String otp = otpUtil.generateOtp();
 //        emailUtil.sendOtpEmail(email, otp);
 //        return otp;
-
 //    }
 
     @Override
     public void saveUser(RegisterDto registerDto) {
         Users users = new Users();
         users.setActive(ActiveStatus.NEW.getStatus());
-        registerDto.setPassword(registerDto.getPassword());
 //        registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         BeanUtils.copyProperties(registerDto, users);
         String otp = otpUtil.generateOtp();
@@ -67,11 +72,12 @@ public class UsersServiceImpl implements UsersService {
     public boolean existsByNameIgnoreCase(String name) {
         return usersRepository.existsByNameIgnoreCase(name);
     }
+
     @Override
-    public String getActiveStatus(String username)
-    {
+    public String getActiveStatus(String username) {
         return usersRepository.findByNameIgnoreCase(username).getActive();
     }
+
     @Override
     public boolean existsByEmailIgnoreCase(String email) {
         return usersRepository.existsByEmailIgnoreCase(email);
@@ -130,17 +136,41 @@ public class UsersServiceImpl implements UsersService {
         usersRepository.save(users);
     }
 
-//
+    @Override
+    public void sendEmailWithAttachment(EmailDto emailDto) {
+        try {
+            byte[] attachmentContent = getFileContent(emailDto.getAttachment()); // Implement this method to read file content
+            String attachmentFilename = getFilename(emailDto.getAttachment()); // Implement this method to extract the filename from the file path
+            emailUtil.sendEmailWithAttachment(emailDto, attachmentContent, attachmentFilename);
+            // ...
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read file content. Please try again.", e);
+        }
+    }
+    @Override
+    public void sendEmailWithAttachmentFile(EmailDto emailDto) {
+        try {
+            byte[] attachmentContent = getFileContent(emailDto.getAttachment());
+            String attachmentFilename = getFilename(emailDto.getAttachment());
+            emailUtil.sendEmailWithAttachment(emailDto, attachmentContent, attachmentFilename);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read file content. Please try again.", e);
+        }
+    }
+    private byte[] getFileContent(String filePath) throws IOException {
+        Path path = Paths.get(filePath);
+        return Files.readAllBytes(path);
+    }
+    private String getFilename(String filePath) {
+        Path path = Paths.get(filePath);
+        return path.getFileName().toString();
+    }
 
 //    @Override
 //    public boolean findByEmail(String email) {
 //        return usersRepository.findByEmail(email);
 //    }
-
-
 //
-
-
 //    @Override
 //    public void login(LoginDto loginDto) {
 //        Users users = usersRepository.getByName(loginDto.getUsername());
@@ -148,18 +178,14 @@ public class UsersServiceImpl implements UsersService {
 //
 //        }
 //    }
-
-
 //    @Override
 //    public Users getByEmail(String email) {
 //        return usersRepository.getByEmail(email);
 //    }
 //
-////
-////    @Override
-////    public boolean isUpdateExistsByEmail(String email, Long id) {
-////        return usersRepository.existsByEmailAndIdNot(email,id);
-////    }
-
-
+//
+//    @Override
+//    public boolean isUpdateExistsByEmail(String email, Long id) {
+//        return usersRepository.existsByEmailAndIdNot(email,id);
+//    }
 }
